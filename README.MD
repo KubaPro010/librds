@@ -16,3 +16,5 @@ Output:
     Group(a=12288, b=0, c=0, d=0, is_version_b=None)
     Group(a=12288, b=8, c=57549, d=26729, is_version_b=False)
 ```
+
+**Note** that LibRDS required Python 3.10+ to run due to its use of `match` in the character set which is required for PS, RT, PTYN and also match is used in AF
