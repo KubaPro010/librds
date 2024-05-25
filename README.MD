@@ -12,5 +12,7 @@ print(librds.GroupGenerator.ps(basic,"hi",0))
 ```
 
 Output:
+```
     Group(a=12288, b=0, c=0, d=0, is_version_b=None)
     Group(a=12288, b=8, c=57549, d=26729, is_version_b=False)
+```
