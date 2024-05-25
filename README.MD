@@ -5,7 +5,7 @@ Example code:
 ```python
 import librds
 
-basic = librds
+basic = librds.GroupGenerator.basic(0x3000)
 print(basic)
 
 print(librds.GroupGenerator.ps(basic,"hi",0))
