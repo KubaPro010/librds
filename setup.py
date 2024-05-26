@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '1.2' 
+VERSION = '1.3' 
 DESCRIPTION = 'RDS Group Generator'
 LONG_DESCRIPTION = 'RDS Group generator with ECC LIC PTYN InHouse TDC PS RT'
 
