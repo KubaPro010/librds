@@ -1,20 +1,21 @@
 from setuptools import setup, find_packages
 
-VERSION = '1.3.5' 
-DESCRIPTION = 'RDS Group Generator'
-LONG_DESCRIPTION = """RDS Group encoder & decoder made in Python 3.10 (you need 3.10 or up for this for its match use)
-Source Code: https://flerken.zapto.org:1115/kuba/librds (also includes a better readme)"""
+with open('README.md', encoding='utf-8') as f:
+    readme = f.read()
 
 setup(
         name="librds", 
-        version=VERSION,
+        version="1.3.6",
         author="kuba201",
-        author_email="kuba.pro010+librds@gmail.com",
-        description=DESCRIPTION,
-        long_description=LONG_DESCRIPTION,
+        description='RDS Group Generator',
+        long_description=readme,
+        long_description_content_type='text/markdown',
         packages=find_packages(),
+        url="https://flerken.zapto.org:1115/kuba/librds",
         install_requires=[],
-        
+        project_urls={
+            'Source': 'https://flerken.zapto.org:1115/kuba/librds',
+        },
         keywords=['radiodatasystem','rds'],
         classifiers= [
             "Development Status :: 3 - Alpha",

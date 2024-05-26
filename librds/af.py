@@ -34,7 +34,7 @@ class AlternativeFrequencyEntry:
     def __len__(self):
         return self.lenght
     def __repr__(self) -> str:
-        return f"<AFEntry FREQ:{self.freq} BAND:{self.band.name} AF_FREQ:{self.af_freq} LEN:{self.lenght} LFMF:{self.lfmf}>"
+        return f"<AFEntry freq={self.freq} band={self.band.name} af_freq={self.af_freq} len={self.lenght} lfmf={self.lfmf}>"
 class AlternativeFrequency:
     """This is a working Alterntive Frequency implementation that was tested on FM, LF, MF, RBDS MF
     however the rbds MF does have a problem, on rds mf 540 and 549 work but 550 doesnt, this is expected as 550 is not divisible by 9 as in europe am has a 9 khz step

@@ -5,7 +5,7 @@ from .charset import *
 
 class GroupGenerator:
     def basic(pi:int, tp: bool=False, pty: int=0):
-        """This function will generate a basic block structure which includes the PI, TP and PTY"""
+        """This function will generate a basic block structure which includes the PI, TP and PTY, this shouldn't be sent by itself to a decoder"""
         return Group(
             pi & 0xFFFF, #A
             (int(tp) << 10 | pty << 5) & 0xFFFF, #B

@@ -1,10 +1,6 @@
-__pycache__/
 .vscode
-# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-
-# Distribution / packaging
 bin/
 build/
 develop-eggs/
@@ -18,7 +14,5 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-
-# Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
