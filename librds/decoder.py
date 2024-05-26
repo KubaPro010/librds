@@ -1,5 +1,5 @@
 from enum import IntEnum
-from .charset import RDSCharset
+from .charset import RDSCharsetDecode
 from .group import Group, dataclass
 
 @dataclass
@@ -39,7 +39,7 @@ class DecodedGroup:
     details:Details
 
 class GroupDecoder:
-    def decode_0(self, group: Group, dgroup: DecodedGroup):
+    def _decode_0(self, group: Group, dgroup: DecodedGroup):
         segment = group.b & 3
         ta = (group.b >> 4) & 1
         ms = (group.b >> 3) & 1
@@ -51,12 +51,12 @@ class GroupDecoder:
         
         char_1 = (group.d >> 8) & 0xFF
         char_2 = group.d & 0xFF
-        details.text += chr(char_1) #TODO: add charset decoding
-        details.text += chr(char_2) #TODO: add charset decoding
+        details.text += RDSCharsetDecode.translate(char_1)
+        details.text += RDSCharsetDecode.translate(char_2)
         
         dgroup.details = details
         return group, dgroup
-    def decode_2(self, group: Group, dgroup: DecodedGroup):
+    def _decode_2(self, group: Group, dgroup: DecodedGroup):
         dgroup.group = 2
         segment = group.b & 15
         ab = (group.b >> 4) & 1
@@ -67,29 +67,28 @@ class GroupDecoder:
             char_2 = group.c & 0xFF
             char_3 = (group.d >> 8) & 0xFF
             char_4 = group.d & 0xFF
-            details.text += chr(char_1) #TODO: add charset decoding
-            details.text += chr(char_2) #TODO: add charset decoding
-            details.text += chr(char_3) #TODO: add charset decoding
-            details.text += chr(char_4) #TODO: add charset decoding
+            details.text += RDSCharsetDecode.translate(char_1)
+            details.text += RDSCharsetDecode.translate(char_2)
+            details.text += RDSCharsetDecode.translate(char_3)
+            details.text += RDSCharsetDecode.translate(char_4)
         else:
             char_1 = (group.d >> 8) & 0xFF
             char_2 = group.d & 0xFF
-            details.text += chr(char_1) #TODO: add charset decoding
-            details.text += chr(char_2) #TODO: add charset decoding
+            details.text += RDSCharsetDecode.translate(char_1)
+            details.text += RDSCharsetDecode.translate(char_2)
         
         dgroup.details = details
         return group, dgroup
-    def decode_1(self, group:Group, dgroup:DecodedGroup):
+    def _decode_1(self, group:Group, dgroup:DecodedGroup):
         dgroup.group = 1
         tmp = (group.c & 0xFF)
         details = ECCLICDetails(0,False)
-        if ((tmp >> 4) & 0xF) != 14: 
+        if tmp < 0x46:
             details.is_lic = True
-            tmp = tmp & 0xFF
         details.data = tmp
         dgroup.details = details
         return group, dgroup
-    def decode_10(self, group:Group, dgroup:DecodedGroup):
+    def _decode_10(self, group:Group, dgroup:DecodedGroup):
         dgroup.group = 10
         segment = group.b & 3
         ab = (group.b >> 4) & 1
@@ -98,10 +97,10 @@ class GroupDecoder:
         char_2 = group.c & 0xFF
         char_3 = (group.d >> 8) & 0xFF
         char_4 = group.d & 0xFF
-        details.text += chr(char_1) #TODO: add charset decoding
-        details.text += chr(char_2) #TODO: add charset decoding
-        details.text += chr(char_3) #TODO: add charset decoding
-        details.text += chr(char_4) #TODO: add charset decoding
+        details.text += RDSCharsetDecode.translate(char_1)
+        details.text += RDSCharsetDecode.translate(char_2)
+        details.text += RDSCharsetDecode.translate(char_3)
+        details.text += RDSCharsetDecode.translate(char_4)
         dgroup.details = details
         return group, dgroup
         
@@ -114,15 +113,15 @@ class GroupDecoder:
         if group.is_version_b and gr != 0: gr -= 1
         match gr:
             case 0:
-                group, out = self.decode_0(group, out)
+                group, out = self._decode_0(group, out)
             case 2:
-                group, out = self.decode_2(group, out)
+                group, out = self._decode_2(group, out)
             case 1:
-                group, out = self.decode_1(group, out)
+                group, out = self._decode_1(group, out)
             case 10:
-                group, out = self.decode_10(group, out)
+                group, out = self._decode_10(group, out)
             case _:
-                print(gr)
+                out.group = gr
         return out
 def test_decoder():
     dec = GroupDecoder()
@@ -132,13 +131,19 @@ def test_decoder():
     psb = GroupGenerator.ps_b(basic, "radio95 ", 3,ta=True)
     rt = GroupGenerator.rt(basic,"hello!\r ",0)
     rtb = GroupGenerator.rt_b(basic,"hello!\r ",0)
-    ecc = GroupGenerator.ecc(basic,0xe2)
-    lic = GroupGenerator.lic(basic,0x20)
+    eccs = []
+    for i in range(0xa0, 0xf3):
+        eccs.append(GroupGenerator.ecc(basic,i))
+    lics = []
+    for i in range(0x0, 0x46):
+        lics.append(GroupGenerator.lic(basic,i))
     ptyn = GroupGenerator.ptyn(basic, "Test".ljust(8), 0,ab=True)
-    print("ps", dec.decode(ps))
-    print("psb", dec.decode(psb))
-    print("rt", dec.decode(rt))
-    print("rtb", dec.decode(rtb))
-    print("ecc", dec.decode(ecc))
-    print("lic", dec.decode(lic))
-    print("ptyn", dec.decode(ptyn))
+    print("ps".ljust(6), dec.decode(ps))
+    print("psb".ljust(6), dec.decode(psb))
+    print("rt".ljust(6), dec.decode(rt))
+    print("rtb".ljust(6), dec.decode(rtb))
+    for i,ecc in enumerate(eccs):
+        print(f"ecc{i}".ljust(6), dec.decode(ecc))
+    for i,lic in enumerate(lics):
+        print(f"lic{i}".ljust(6), dec.decode(lic))
+    print("ptyn".ljust(6), dec.decode(ptyn))
