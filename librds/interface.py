@@ -1,6 +1,6 @@
 class GroupInterface:
     def getPS(text: str, full=None): #variable left for backwards compatibility
-        if not full is None: print("Please update your code for the librds 1.2 version. (getPS)")
+        if not full is None: print("Please update your code for the librds 1.2+ version. (getPS, this will be removed on version 2)")
         if len(text) > 8: text = text[8:]
         return text.ljust(8), 4
     def getRT(text: str,full:bool=False):
@@ -16,6 +16,6 @@ class GroupInterface:
         else:
             return text.ljust(64), 16
     def getPTYN(text: str,full=None): #variable left for backwards compatibility
-        if not full is None: print("Please update your code for the librds 1.2 version. (getPTYN)")
+        if not full is None: print("Please update your code for the librds 1.2+ version. (getPTYN, this will be removed on version 2)")
         if len(text) > 8: text = text[8:]
         return text.ljust(8), 2

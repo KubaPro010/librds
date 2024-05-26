@@ -1,7 +1,5 @@
 from enum import Enum, IntEnum
 
-#this expoers AF_Codes AF_Bands AlternativeFrequencyEntry AlternativeFrequency
-
 class AF_Codes(Enum):
     Filler = 205
     NoAF = 224
