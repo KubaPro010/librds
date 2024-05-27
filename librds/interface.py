@@ -10,7 +10,7 @@ class GroupInterface:
             segments = 0
             for _ in range(len(text)):
                 segments = segments + 0.25 # 1/4 = 0.25 | 0.25*4 = 1
-            if not segments.is_integer(): raise Exception("Segment error (segment is not int)")
+            if not float(segments).is_integer(): raise Exception("Segment error (segment is not int)")
             if int(segments) > 15: return None, None
             return text, int(segments)
         else:
