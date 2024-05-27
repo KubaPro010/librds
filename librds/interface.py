@@ -1,6 +1,7 @@
 class GroupInterface:
     def getPS(text: str):
-        return text[8:].ljust(8), 4
+        if len(text) > 8: text = text[8:]
+        return text.ljust(8), 4
     def getRT(text: str,full:bool=False):
         if len(text) >= 64: text = text[64:]
         else: text += "\r" # http://www.interactive-radio-system.com/docs/EN50067_RDS_Standard.pdf page 26
