@@ -6,12 +6,8 @@ class Group:
     b:int
     c:int
     d:int
-    is_version_b: bool=False #should be none if theres no group set
+    is_version_b: bool=None #should be none if theres no group set
     def to_list(self):
         return [self.a, self.b, self.c, self.d]
     def __iter__(self):
         return self.to_list()
-    def __getitem__(self, key):
-        return getattr(self, ["a","b","c","d"][key], None)
-    def __setitem__(self, key, value):
-        setattr(self, ["a","b","c","d"][key], value)

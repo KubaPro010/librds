@@ -5,7 +5,7 @@ with open('README.md', encoding='utf-8') as f:
 
 setup(
         name="librds", 
-        version="1.3.6",
+        version="1.3.7",
         author="kuba201",
         description='RDS Group Generator',
         long_description=readme,
@@ -16,13 +16,13 @@ setup(
         project_urls={
             'Source': 'https://flerken.zapto.org:1115/kuba/librds',
         },
-        keywords=['radiodatasystem','rds'],
+        keywords=['radiodatasystem','rds','broadcast_fm'],
         classifiers= [
-            "Development Status :: 3 - Alpha",
             "Intended Audience :: Education",
             "Intended Audience :: Telecommunications Industry",
             "Programming Language :: Python :: 3 :: Only",
             "Programming Language :: Python :: 3.10",
-            "Development Status :: 4 - Beta"
+            "Development Status :: 5 - Production/Stable",
+            "License :: OSI Approved :: GNU General Public License (GPL)",
         ]
 )

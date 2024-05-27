@@ -1,5 +1,5 @@
 class RDSCharsetError(Exception): pass
-class RDSCharset: #From version 1.1, don't initilize it
+class RDSCharset:
     def translate(character:str):
         if not type(character) == str: raise RDSCharsetError("Input is not a string")
         elif len(character) != 1: raise RDSCharsetError("This accepts only 1 character.")

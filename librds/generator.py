@@ -1,7 +1,7 @@
 from .group import Group
 from .comfort import get_from_list
 from .af import AlternativeFrequency
-from .charset import *
+from .charset import RDSCharset
 
 class GroupGenerator:
     def basic(pi:int, tp: bool=False, pty: int=0):

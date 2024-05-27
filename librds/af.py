@@ -1,10 +1,10 @@
 from enum import Enum, IntEnum
 
 class AF_Codes(Enum):
-    Filler = 205
-    NoAF = 224
-    NumAFSBase = 224 #same as no af
-    LfMf_Follows = 250
+    Filler = 0xCD
+    NoAF = 0xE0
+    NumAFSBase = 0xE0 #same as no af
+    LfMf_Follows = 0xFA
 class AF_Bands(Enum):
     FM = 0
     LF = 1
