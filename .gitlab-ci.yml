@@ -7,16 +7,16 @@ cache:
   paths:
     - .cache/pip
 
+stages:
+  - build
+  - deploy
+
 before_script:
   - python --version
   - pip --version  # For debugging
   - pip install --upgrade pip setuptools wheel  # Ensure pip and setuptools are up-to-date
   - pip install --upgrade build
   - pip install --upgrade twine
-
-stages:
-  - build
-  - deploy
 
 build:
   stage: build
