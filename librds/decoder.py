@@ -99,6 +99,10 @@ class GroupDecoder:
         details.text += RDSCharsetDecode.translate(char_4)
         dgroup.details = details
         return group, dgroup
+    def _decode_4(self, group:Group, dgroup:DecodedGroup):
+        dgroup.group = 4
+        #TODO: add 4A group decoding
+        return group, dgroup
     def decode(self, group: Group):
         out = DecodedGroup(group,group.a,False,0,0,None)
         out.pty = ((group.b >> 5) & 31)

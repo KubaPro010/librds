@@ -7,6 +7,21 @@ def get_from_list(input:list,index:int,default=None):
     except IndexError:
         return default
 
+def calculate_mjd(year: int, month: int, day:int):
+    """Year: e.x 2024
+    Month: (starts from 0) 0 - Jan, 1 - Feb ...
+    Day - (starts from 1)"""
+    l = 1 if (month == 0 or month == 1) else 0
+    return (
+        14956 + day + 
+        int(
+            ((year - 1900) - l) * 365.25
+        ) +
+        int(
+            (month + 2 + l * 12) * 30.6001
+        )
+    )
+
 class Groups(Enum):
     PS = 0
     PS_B = 1

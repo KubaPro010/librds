@@ -1,0 +1,5 @@
+Version 1.4:
+- Add a few tests to the GI
+- Fix a small bug in the GI
+- Add 4A (with a mjd calculation function)
+- Create changelog
