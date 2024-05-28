@@ -30,7 +30,6 @@ build:
       - dist/*
 
 test:
-  needs: ["build"]
   stage: test
   script:
     - pip install .
@@ -41,9 +40,9 @@ test:
       junit: report.xml
 
 deploy:
-  needs: ["test"]
   stage: deploy
   script:
+    - ls
     - python3 -m twine upload --repository pypi dist/* --non-interactive -p $api_key
   environment: production
   only:
