@@ -27,7 +27,7 @@ class GroupSequencer:
         self.sequence = sequence
     def get_next(self):
         if len(self.sequence) == 0: return
-        if self.cur_idx > len(self.sequence)-1: self.cur_idx = 1
+        if self.cur_idx > len(self.sequence): self.cur_idx = 1
         prev = self.sequence[self.cur_idx-1]
         self.cur_idx += 1
         return prev
@@ -36,3 +36,5 @@ class GroupSequencer:
        self.cur_idx = 1
     def __len__(self):
         return len(self.sequence)
+    def __iter__(self):
+        return self.sequence

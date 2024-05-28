@@ -15,12 +15,12 @@ class PSDetails(Details):
 @dataclass
 class RTDetails(Details):
     segment: int
-    ab: int
+    ab: bool
     text: str
 @dataclass
 class PTYNDetails(Details):
     segment: int
-    ab: int
+    ab: bool
     text: str
 @dataclass
 class ECCLICDetails(Details):
@@ -56,7 +56,7 @@ class GroupDecoder:
         dgroup.group = 2
         segment = group.b & 15
         ab = (group.b >> 4) & 1
-        details = RTDetails(segment,ab,"")
+        details = RTDetails(segment,bool(ab),"")
 
         if not group.is_version_b:
             char_1 = (group.c >> 8) & 0xFF
@@ -88,7 +88,7 @@ class GroupDecoder:
         dgroup.group = 10
         segment = group.b & 3
         ab = (group.b >> 4) & 1
-        details = PTYNDetails(segment,ab,"")
+        details = PTYNDetails(segment,bool(ab),"")
         char_1 = (group.c >> 8) & 0xFF
         char_2 = group.c & 0xFF
         char_3 = (group.d >> 8) & 0xFF
@@ -117,27 +117,3 @@ class GroupDecoder:
             case _:
                 out.group = gr
         return out
-def test_decoder():
-    dec = GroupDecoder()
-    from .generator import GroupGenerator
-    basic = GroupGenerator.basic(0x3000, tp=True, pty=10)
-    ps = GroupGenerator.ps(basic, "radio95 ", 3,ta=True)
-    psb = GroupGenerator.ps_b(basic, "radio95 ", 3,ta=True)
-    rt = GroupGenerator.rt(basic,"hello!\r ",0)
-    rtb = GroupGenerator.rt_b(basic,"hello!\r ",0)
-    eccs = []
-    for i in range(0xa0, 0xf3):
-        eccs.append(GroupGenerator.ecc(basic,i))
-    lics = []
-    for i in range(0x0, 0x46):
-        lics.append(GroupGenerator.lic(basic,i))
-    ptyn = GroupGenerator.ptyn(basic, "Test".ljust(8), 0,ab=True)
-    print("ps".ljust(6), dec.decode(ps))
-    print("psb".ljust(6), dec.decode(psb))
-    print("rt".ljust(6), dec.decode(rt))
-    print("rtb".ljust(6), dec.decode(rtb))
-    for i,ecc in enumerate(eccs):
-        print(f"ecc{i}".ljust(6), dec.decode(ecc))
-    for i,lic in enumerate(lics):
-        print(f"lic{i}".ljust(6), dec.decode(lic))
-    print("ptyn".ljust(6), dec.decode(ptyn))
