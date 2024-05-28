@@ -1,6 +1,6 @@
 class GroupInterface:
     def getPS(text: str):
-        if len(text) > 8: text = text[8:]
+        if len(text) > 8: text = text[:8]
         return text.ljust(8), 4
     def getRT(text: str,full:bool=False):
         if len(text) >= 64: text = text[64:]
@@ -17,5 +17,5 @@ class GroupInterface:
         else:
             return text.ljust(64), 16
     def getPTYN(text: str):
-        if len(text) > 8: text = text[8:]
+        if len(text) > 8: text = text[:8]
         return text.ljust(8), 2
