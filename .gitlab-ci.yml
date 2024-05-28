@@ -25,6 +25,7 @@ build:
   script:
     - python3 -m build
   artifacts:
+    when: always
     paths:
       - dist/*
 
