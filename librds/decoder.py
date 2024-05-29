@@ -32,7 +32,7 @@ class DecodedGroup:
     pi: int
     tp: bool
     pty: int
-    group: IntEnum
+    group: int
     details:Details
 class GroupDecoder:
     def _decode_0(self, group: Group, dgroup: DecodedGroup):

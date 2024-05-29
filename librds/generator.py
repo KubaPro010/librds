@@ -116,17 +116,21 @@ class GroupGenerator:
             (RDSCharset.translate(get_from_list(ptyn_text,segment*4+2," "))<<8 | RDSCharset.translate(get_from_list(ptyn_text,segment*4+3," "))) & 0xFFFF,
             False
         )
-    def ct(basic:Group, mjd: int, hour: int, min: int, local_hour:int=None):
+    def ct(basic:Group, mjd: int, hour: int, minute: int, local_hour:int=None,local_minute:int=None):
         """This function should generator a 4A group (can't test properly, you have been warned)"""
         group = Group(
             basic.a & 0xFFFF,
             (basic.b | 4 << 12 | (mjd>>15)) & 0xffff,
             ((mjd<<1) | (hour >> 4)) & 0xffff,
-            ((hour & 0xF)<<12 | min << 6) & 0xffff,
+            ((hour & 0xF)<<12 | minute << 6) & 0xffff,
             False
         )
         if local_hour:
-            offset = local_hour - hour
+            offset_h = local_hour - hour
+            if offset_h < 0: group.d |= (1 << 5) #set the time sense bit to 1
+            if local_minute:
+                offset_m = local_minute - minute
+            else: offset_m = 0
+            offset = int((offset_m + (offset_h * 60)) / 30)
             group.d |= abs(offset)
-            if offset < 0: group.d |= (1 << 5)
         return group

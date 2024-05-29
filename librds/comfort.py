@@ -22,6 +22,26 @@ def calculate_mjd(year: int, month: int, day:int):
         )
     )
 
+def calculate_ymd(mjd:int):
+    """Returns the same format as calculate_mjd, so you can encode and decode without any conversions"""
+    jd = mjd + 2_400_001
+    ljd = jd + 68569
+    
+    njd = int((4 * ljd / 146097))
+    ljd = ljd - int(((146097 * njd + 3) / 4))
+    
+    year = int((4000 * (ljd + 1) / 1461001))
+    ljd = ljd - int(((1461 * year / 4))) + 31
+    
+    month = int((80 * ljd / 2447))
+    
+    day = ljd - int((2447 * month / 80))
+    
+    ljd = int((month / 11));
+    month = int((month + 2 - 12 * ljd))
+    year = int((100 * (njd - 49) + year + ljd))
+    return year, (month-1), day
+
 class Groups(Enum):
     PS = 0
     PS_B = 1
