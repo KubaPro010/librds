@@ -1,3 +1,6 @@
+Version 1.42:
+- Fix a bug with the RT interface
+- Add a new test
 Version 1.41:
 - Fix 4A's offset
 - Add a calculate_ymd, to reverse calculate_mjd
