@@ -17,8 +17,6 @@ before_script:
   - pip --version  # For debugging
   - pip install --upgrade pip setuptools wheel  # Ensure pip and setuptools are up-to-date
   - pip install --upgrade build
-  - pip install --upgrade twine
-  - pip install --upgrade pytest
 
 build:
   stage: build
@@ -33,6 +31,7 @@ test:
   stage: test
   script:
     - pip install .
+    - pip install --upgrade pytest
     - pytest --junitxml=report.xml
   artifacts:
     when: always
@@ -43,6 +42,7 @@ deploy:
   stage: deploy
   script:
     - ls
+    - pip install --upgrade twine
     - python3 -m twine upload --repository pypi dist/* --non-interactive -p $api_key
   environment: production
   only:
