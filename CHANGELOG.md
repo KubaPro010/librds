@@ -1,12 +1,15 @@
 Version 1.5:
 - Changed a type in the decoder
 - Documented further the GroupGenerator
+
 Version 1.42:
 - Fix a bug with the RT interface
 - Add a new test
+
 Version 1.41:
 - Fix 4A's offset
 - Add a calculate_ymd, to reverse calculate_mjd
+
 Version 1.4:
 - Add a few tests to the GI
 - Fix a small bug in the GI
