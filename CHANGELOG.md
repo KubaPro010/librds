@@ -1,3 +1,6 @@
+Version 1.5:
+- Changed a type in the decoder
+- Documented further the GroupGenerator
 Version 1.42:
 - Fix a bug with the RT interface
 - Add a new test

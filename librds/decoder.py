@@ -42,7 +42,7 @@ class GroupDecoder:
         if segment == 3:
             di = (group.b >> 2) & 9
         else:
-            di = 0
+            di = None
         details = PSDetails(segment,di,bool(ms),bool(ta),"")
 
         char_1 = (group.d >> 8) & 0xFF

@@ -6,4 +6,5 @@ def test_sequencer():
     a = []
     for _ in range(len(input)*2):
         a.append(seq.get_next())
+    # We circled it 2 times so 2 have input+input
     assert a == (input+input)
