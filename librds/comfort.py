@@ -7,6 +7,32 @@ def get_from_list(input:list,index:int,default=None):
     except IndexError:
         return default
 
+def SubstituteCharacterAtPosition(string:str, char:str, index:int):
+    """
+    This is a helper function that works like 'string[index] = char' in c
+    
+    :param string: String to process
+    :param char: The character thats going to be at that position
+    :param index: Index of the character
+    """
+    if not isinstance(string, str) or not isinstance(char,str) or not isinstance(index,int): raise Exception
+    if not (0 <= index < len(string)):
+        raise IndexError("Index out of range")
+    return string[:index] + char + string[index + 1:]
+
+class BitProcessor:
+    def set_bit(value:int, bit:int, bit_value:bool, max_number:int=16) -> int:
+        string = ("0"*(max_number-(value.bit_count())))
+        string += bin(value).removeprefix("-").removeprefix("0b")
+        if bit > len(string): raise IndexError
+        string = SubstituteCharacterAtPosition(string,("1" if bit_value else "0"),bit)
+        return int(("0b"+string),2)
+    def get_bit(value:int, bit:int, max_number:int=16) -> int:
+        string = ("0"*(max_number-(value.bit_length())))
+        string += bin(value).removeprefix("-").removeprefix("0b")
+        # return string
+        return int(("0b"+string[bit]),2)
+
 def calculate_mjd(year: int, month: int, day:int):
     """Year: e.x 2024
     Month: (starts from 0) 0 - Jan, 1 - Feb ...

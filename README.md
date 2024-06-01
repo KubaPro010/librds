@@ -23,4 +23,4 @@ Output:
 **Note** that LibRDS required Python 3.10+ to run due to its use of `match` in the character set which is required for PS, RT, PTYN and also match is used in AF
 
 # Decoder
-LibRDS also includes a simple RDS Group decoder, so you can encode with librds and then also decode it, currently librds's decoder decodes most of the stuff it can encode (without support for tdc, in_house, ct but rest are decoded okay)
+LibRDS also includes a RDS Group decoder, so you can encode with librds and then also decode it, currently librds's decoder decodes all of the groups it can encode (such as CT, IH, TDC, etc...)
