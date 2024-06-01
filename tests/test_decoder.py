@@ -1,7 +1,7 @@
 import librds
 
 def test_ps():
-    dec = librds.GroupDecoder()
+    dec = librds.GroupDecoder
     basic = librds.GroupGenerator.basic(0x3000, tp=True, pty=10)
     ps = librds.GroupGenerator.ps(basic, "radio95 ", 3,ta=True)
     ps_d = dec.decode(ps)
@@ -17,7 +17,7 @@ def test_ps():
     assert ps_d.details.text == "5 "
 
 def test_psb():
-    dec = librds.GroupDecoder()
+    dec = librds.GroupDecoder
     basic = librds.GroupGenerator.basic(0x3000, tp=True, pty=10)
     psb = librds.GroupGenerator.ps_b(basic, "radio95 ", 3,ta=True)
     psb_d = dec.decode(psb)
@@ -34,7 +34,7 @@ def test_psb():
     assert psb_d.details.text == "5 "
 
 def test_rt():
-    dec = librds.GroupDecoder()
+    dec = librds.GroupDecoder
     basic = librds.GroupGenerator.basic(0x3000, tp=True, pty=10)
     rt = librds.GroupGenerator.rt(basic,"Test\r   ",0)
     rt_d = dec.decode(rt)
@@ -49,7 +49,7 @@ def test_rt():
     assert rt_d.details.text == "Test"
 
 def test_rt2():
-    dec = librds.GroupDecoder()
+    dec = librds.GroupDecoder
     basic = librds.GroupGenerator.basic(0x3000, tp=True, pty=10)
     rt = librds.GroupGenerator.rt(basic,"Test\r   ",0,ab=True)
     rt_d = dec.decode(rt)
@@ -64,7 +64,7 @@ def test_rt2():
     assert rt_d.details.text == "Test"
 
 def test_rtb():
-    dec = librds.GroupDecoder()
+    dec = librds.GroupDecoder
     basic = librds.GroupGenerator.basic(0x3000)
     rt = librds.GroupGenerator.rt_b(basic,"Test\r   ",0)
     rt_d = dec.decode(rt)
@@ -77,7 +77,7 @@ def test_rtb():
     assert rt_d.details.text == "Te"
 
 def test_rtb2():
-    dec = librds.GroupDecoder()
+    dec = librds.GroupDecoder
     basic = librds.GroupGenerator.basic(0x3000)
     rt = librds.GroupGenerator.rt_b(basic,"Test\r   ",0,ab=True)
     rt_d = dec.decode(rt)
@@ -90,7 +90,7 @@ def test_rtb2():
     assert rt_d.details.text == "Te"
 
 def test_ecc():
-    dec = librds.GroupDecoder()
+    dec = librds.GroupDecoder
     basic = librds.GroupGenerator.basic(0x3000)
     eccs = []
     for i in range(0xa0, 0xf3):
@@ -102,7 +102,7 @@ def test_ecc():
         assert ecc_d.details.is_lic == False
 
 def test_lic():
-    dec = librds.GroupDecoder()
+    dec = librds.GroupDecoder
     basic = librds.GroupGenerator.basic(0x3000)
     lics = []
     for i in range(0x0, 0x46):
@@ -114,7 +114,7 @@ def test_lic():
         assert lic_d.details.is_lic == True
         
 def test_ptyn():
-    dec = librds.GroupDecoder()
+    dec = librds.GroupDecoder
     basic = librds.GroupGenerator.basic(0x3000, tp=True, pty=10)
     ptyn = librds.GroupGenerator.ptyn(basic,"Test".ljust(8),0)
     ptyn_d = dec.decode(ptyn)
@@ -128,7 +128,7 @@ def test_ptyn():
     assert ptyn_d.details.ab == False
     assert ptyn_d.details.text == "Test"
 def test_ptyn2():
-    dec = librds.GroupDecoder()
+    dec = librds.GroupDecoder
     basic = librds.GroupGenerator.basic(0x3000, tp=True, pty=10)
     ptyn = librds.GroupGenerator.ptyn(basic,"Test".ljust(8),0,ab=True)
     ptyn_d = dec.decode(ptyn)
