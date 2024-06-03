@@ -1,3 +1,6 @@
+Version 1.7:
+- Added EON and EON B and ODA
+
 Version 1.5:
 - Changed a type in the decoder
 - Documented further the GroupGenerator

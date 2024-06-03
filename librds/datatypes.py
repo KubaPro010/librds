@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-        
+
 @dataclass
 class Group:
     """This is a basic group function to store the blocks"""
@@ -12,8 +12,6 @@ class Group:
         return [self.a, self.b, self.c, self.d]
     def __iter__(self):
         return self.to_list()
-    def to_bytes(self):
-        return [self.a.to_bytes(2,)]
 
 @dataclass
 class GroupIdentifier:
@@ -75,6 +73,23 @@ class ODAAidDetails(Details):
     oda_group: GroupIdentifier
     aid:int
     scb:int
+
+@dataclass
+class EONBDetails(Details):
+    pi: int
+    tp: bool
+    ta: bool
+
+@dataclass
+class EONADetails(Details):
+    pi: int
+    tp: bool
+    ta: bool
+    ps_segment:int
+    ps_text:str
+    pty: int
+    on_af: int
+    variant_code:int
 
 @dataclass
 class DecodedGroup:
