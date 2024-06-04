@@ -1,3 +1,8 @@
+Version 1.8:
+- Added decode for ODA
+- Added en/decode for LongPS
+- Added decoding of AF
+
 Version 1.7:
 - Added EON and EON B and ODA
 

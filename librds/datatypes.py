@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from .af import AlternativeFrequencyEntryDecoded
 
 @dataclass
 class Group:
@@ -33,11 +34,17 @@ class PSDetails(Details):
     ms: bool
     ta: bool
     text: str
+    af: AlternativeFrequencyEntryDecoded
 
 @dataclass
 class RTDetails(Details):
     segment: int
     ab: bool
+    text: str
+
+@dataclass
+class LongPSDetails(Details):
+    segment: int
     text: str
 
 @dataclass
@@ -66,6 +73,10 @@ class TDCDetails(Details):
 
 @dataclass
 class InHouseDetails(Details):
+    data: list[int]
+
+@dataclass
+class ODADetails(Details):
     data: list[int]
 
 @dataclass

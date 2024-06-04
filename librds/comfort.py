@@ -80,6 +80,8 @@ def calculate_mjd(year: int, month: int, day:int):
 
 def calculate_ymd(mjd:int):
     """Returns the same format as calculate_mjd, so you can encode and decode without any conversions"""
+    if mjd < 15079.0:
+        raise Exception("Invalid MJD")
     jd = mjd + 2_400_001
     ljd = jd + 68569
     

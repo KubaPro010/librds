@@ -1,4 +1,5 @@
 from enum import Enum, IntEnum
+from dataclasses import dataclass
 
 class AF_Codes(Enum):
     Filler = 0xCD
@@ -46,6 +47,9 @@ class AlternativeFrequency:
     def get_no_af(self=None): return AF_Codes.NoAF.value << 8 | AF_Codes.Filler.value
     def get_lfmf_follows(self=None): return AF_Codes.LfMf_Follows.value << 8 | AF_Codes.Filler.value
     def get_next(self):
+        print(self.cur_idx)
+        if len(self.af) > 25:
+            raise Exception("Too much afs!")
         if len(self.af) > self.cur_idx or len(self.af) > 0:
             out = 0
             if self.cur_idx == 0:
@@ -54,24 +58,38 @@ class AlternativeFrequency:
                 return (AF_Codes.NumAFSBase.value + len(self.af)) << 8 | self.af[0].af_freq
             else:
                 try:
-                    if not self.af[self.cur_idx].lfmf:
-                        out = self.af[self.cur_idx].af_freq << 8
+                    if not self.af[self.cur_idx-1].lfmf:
+                        out = self.af[self.cur_idx-1].af_freq << 8
                     else:
                         out = AF_Codes.LfMf_Follows.value << 8
                 except IndexError:
-                    self.cur_idx = 0
-                    return self.get_next()
-                if not self.af[self.cur_idx].lfmf:
-                    try:
-                        if self.af[self.cur_idx + 1]:
-                            out |= self.af[self.cur_idx +1].af_freq
-                    except IndexError:
+                    if not len(self.af) == 1:
+                        self.cur_idx = 0
+                        return self.get_next()
+                    else:
+                        out = self.af[0].af_freq << 8
+                try:
+                    if not self.af[self.cur_idx].lfmf:
+                        try:
+                            if self.af[self.cur_idx]:
+                                out |= self.af[self.cur_idx].af_freq
+                        except IndexError:
+                            out |= AF_Codes.Filler.value
+                    else:
+                            out |= self.af[self.cur_idx].af_freq
+                except IndexError:
+                    if self.cur_idx == 1 and len(self.af) == 1:
                         out |= AF_Codes.Filler.value
-                else:
-                        out |= self.af[self.cur_idx].af_freq
-                self.cur_idx += 1
+                self.cur_idx += 2
                 if self.cur_idx >= len(self.af): self.cur_idx = 0
                 return out
         else:
             self.cur_idx = 0
             return self.get_no_af()
+@dataclass
+class AlternativeFrequencyEntryDecoded:
+    is_af:bool
+    af_freq:int
+    af_freq1:int
+    lfmf_follows:bool
+    all_af_lenght:int

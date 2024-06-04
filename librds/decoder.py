@@ -1,6 +1,7 @@
-from .datatypes import Group, DecodedGroup, GroupIdentifier, PSDetails, RTDetails, ECCLICDetails, PTYNDetails, CTDetails, TDCDetails, InHouseDetails, ODAAidDetails, EONBDetails, EONADetails
+from .datatypes import Group, DecodedGroup, GroupIdentifier, PSDetails, RTDetails, ECCLICDetails, PTYNDetails, CTDetails, TDCDetails, InHouseDetails, ODAAidDetails, EONBDetails, EONADetails, ODADetails, LongPSDetails
 from .charset import RDSCharsetDecode
 from .comfort import BitManipulator
+from .af import AF_Codes, AlternativeFrequencyEntryDecoded
 
 class GroupDecoder:
     def decode(group:Group):
@@ -22,9 +23,32 @@ class GroupDecoder:
             def readSegment():
                 is_di = bool(BitManipulator.get_bit(group.b,13))
                 return is_di, readValue(group.b, 2, 14)
+            def decodeAF():
+                af0 = (group.c >> 8) & 0xff
+                af1 = group.c & 0xff
+                # print(bin(af0))
+                entry = AlternativeFrequencyEntryDecoded(None,None,None,None,None)
+                if af0 == AF_Codes.NoAF.value and af1 == AF_Codes.Filler.value:
+                    entry.is_af = False
+                elif af0 == AF_Codes.LfMf_Follows.value and af1 == AF_Codes.Filler.value:
+                    entry.lfmf_follows = True
+                elif BitManipulator.get_bits(af0, 3, 0, 8) == 7:
+                    #0b111, this is lenght
+                    entry.all_af_lenght = (af0-AF_Codes.NumAFSBase.value)
+                elif af0 != AF_Codes.LfMf_Follows.value and af0 != AF_Codes.NoAF.value:
+                    #we have a normal entry
+                    entry.af_freq = af0
+                    if af1 != AF_Codes.Filler.value:
+                        entry.af_freq1 = af1
+                return entry
+                
             ta, ms = readTAMS()
             is_di, segment = readSegment()
-            det = PSDetails(segment,None,None,None,None,ms,ta,"")
+            if group_version == 0:
+                af_entry = decodeAF()
+            else:
+                af_entry = None
+            det = PSDetails(segment,None,None,None,None,ms,ta,"",af_entry)
             #i've spent a long time understanding di, and to be honest when i understand it, its fucking genius (from redsea's source code)
             match segment:
                 case 0:
@@ -136,6 +160,27 @@ class GroupDecoder:
                         on_pty = readValue(group.c,5,0)
                         on_ta = bool(BitManipulator.get_bit(group.c,15))
                 group_out.details = EONADetails(on_pi, on_tp, on_ta, on_ps_segment, on_ps_text, on_pty, on_af, variant_code)
+        def decode_group_15():
+            #LPS
+            segment = readValue(group.b, 4, 12)
+            det = LongPSDetails(segment,"")
+            char_1 = (group.c >> 8) & 0xFF
+            char_2 = group.c & 0xFF
+            char_3 = (group.d >> 8) & 0xFF
+            char_4 = group.d & 0xFF
+            det.text += RDSCharsetDecode.translate(char_1)
+            det.text += RDSCharsetDecode.translate(char_2)
+            det.text += RDSCharsetDecode.translate(char_3)
+            det.text += RDSCharsetDecode.translate(char_4)
+            group_out.details = det
+        def decode_group_oda():
+            #same as inhouse
+            data_from_b = readValue(group.b,5,11)
+            data = [data_from_b]
+            if group_version == 0:
+                data.append(group.c)
+            data.append(group.d)
+            group_out.details = ODADetails(data)
             
 
         match group_number:
@@ -147,14 +192,22 @@ class GroupDecoder:
                 decode_group_2()
             case 3:
                 if group_version == 0: decode_group_3()
+                else: decode_group_oda()
             case 4:
                 if group_version == 0: decode_group_4()
+                else: decode_group_oda()
             case 5:
                 decode_group_5()
             case 6:
                 decode_group_6()
             case 10:
                 if group_version == 0: decode_group_10()
+                else: decode_group_oda()
             case 14:
                 decode_group_14()
+            case 15:
+                if group_version == 0: decode_group_15()
+                else: decode_group_oda()
+            case _:
+                decode_group_oda()
         return group_out
