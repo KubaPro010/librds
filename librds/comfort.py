@@ -100,6 +100,11 @@ def calculate_ymd(mjd:int):
     year = int((100 * (njd - 49) + year + ljd))
     return year, (month-1), day
 
+def calculate_ctoffset_to_hrmin(offset:int) -> tuple[int,int]:
+    """Returns the hour and minute offset of CT"""
+    h = int((offset*30)/60)
+    return h, int((offset*30)-(h*60))
+
 class Groups(Enum):
     PS = 0
     PS_B = 1
@@ -112,6 +117,11 @@ class Groups(Enum):
     TDC_B = 8
     IN_HOUSE = 9
     IN_HOUSE_B = 10
+    EON = 11
+    EON_B = 12
+    ODA = 13
+    ODA_AID = 14
+    LONG_PS = 15
 
 class GroupSequencer:
     """you can use this code to sequence though anything"""

@@ -1,3 +1,6 @@
+Version 1.9:
+- Some improvements
+
 Version 1.8:
 - Added decode for ODA
 - Added en/decode for LongPS

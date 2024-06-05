@@ -1,4 +1,12 @@
-from .datatypes import Group, DecodedGroup, GroupIdentifier, PSDetails, RTDetails, ECCLICDetails, PTYNDetails, CTDetails, TDCDetails, InHouseDetails, ODAAidDetails, EONBDetails, EONADetails, ODADetails, LongPSDetails
+from .datatypes import Group, DecodedGroup, \
+    GroupIdentifier, PSDetails, \
+    RTDetails, ECCLICDetails, \
+    PTYNDetails, CTDetails, \
+    TDCDetails, InHouseDetails, \
+    ODAAidDetails, EONBDetails, \
+    EONADetails, ODADetails, \
+    LongPSDetails
+
 from .charset import RDSCharsetDecode
 from .comfort import BitManipulator
 from .af import AF_Codes, AlternativeFrequencyEntryDecoded
@@ -26,17 +34,14 @@ class GroupDecoder:
             def decodeAF():
                 af0 = (group.c >> 8) & 0xff
                 af1 = group.c & 0xff
-                # print(bin(af0))
                 entry = AlternativeFrequencyEntryDecoded(None,None,None,None,None)
                 if af0 == AF_Codes.NoAF.value and af1 == AF_Codes.Filler.value:
                     entry.is_af = False
                 elif af0 == AF_Codes.LfMf_Follows.value and af1 == AF_Codes.Filler.value:
                     entry.lfmf_follows = True
                 elif BitManipulator.get_bits(af0, 3, 0, 8) == 7:
-                    #0b111, this is lenght
                     entry.all_af_lenght = (af0-AF_Codes.NumAFSBase.value)
                 elif af0 != AF_Codes.LfMf_Follows.value and af0 != AF_Codes.NoAF.value:
-                    #we have a normal entry
                     entry.af_freq = af0
                     if af1 != AF_Codes.Filler.value:
                         entry.af_freq1 = af1

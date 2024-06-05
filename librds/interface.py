@@ -19,11 +19,11 @@ class GroupInterface:
     def getLongPS(text: str,full:bool=False):
         if len(text) >= 32: text = text[:32]
         if not full:
-            while len(text) % 4: # if we don't have text to equally spread across 4 charcter parts then we add padding
+            while len(text) % 4:
                 text = text + " "
             segments = 0
             for _ in range(len(text)):
-                segments = segments + 0.25 # 1/4 = 0.25 | 0.25*4 = 1
+                segments = segments + 0.25
             if not float(segments).is_integer(): raise Exception("Segment error (segment is not int)")
             if int(segments) > 8: return None, None
             return text, int(segments)
