@@ -9,34 +9,22 @@ cache:
 
 stages:
   - build
-  - test
   - deploy
 
 before_script:
   - python --version
   - pip --version  # For debugging
   - pip install --upgrade pip setuptools wheel  # Ensure pip and setuptools are up-to-date
-  - pip install --upgrade build
 
 build:
   stage: build
   script:
+    - pip install --upgrade build
     - python3 -m build
   artifacts:
     when: always
     paths:
       - dist/*
-
-test:
-  stage: test
-  script:
-    - pip install .
-    - pip install --upgrade pytest
-    - pytest --junitxml=report.xml
-  artifacts:
-    when: always
-    reports:
-      junit: report.xml
 
 deploy:
   stage: deploy

@@ -1,3 +1,7 @@
+Version 1.91:
+- Remove tests
+- Fix some stuff about LPS (redsea can decode it now)
+
 Version 1.9:
 - Some improvements
 

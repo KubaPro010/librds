@@ -3,5 +3,5 @@ from .comfort import Groups, GroupSequencer, calculate_mjd, calculate_ymd, calcu
 from .af import AF_Bands, AlternativeFrequencyEntry, AlternativeFrequency
 from .generator import GroupGenerator, Group, GroupIdentifier
 from .decoder import GroupDecoder
-__version__ = 1.9
+__version__ = 1.91
 librds_version = __version__

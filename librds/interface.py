@@ -18,6 +18,7 @@ class GroupInterface:
             return text.ljust(64), 16
     def getLongPS(text: str,full:bool=False):
         if len(text) >= 32: text = text[:32]
+        elif not full: text += "\r"
         if not full:
             while len(text) % 4:
                 text = text + " "

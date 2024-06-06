@@ -5,7 +5,7 @@ with open('README.md', encoding='utf-8') as f:
 
 setup(
         name="librds", 
-        version="1.9",
+        version="1.91",
         author="kuba201",
         description='RDS Group Generator',
         long_description=readme,
