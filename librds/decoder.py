@@ -1,11 +1,12 @@
 from .datatypes import Group, DecodedGroup, \
     GroupIdentifier, PSDetails, \
-    RTDetails, ECCLICDetails, \
+    RTDetails, PINSLCetails, \
     PTYNDetails, CTDetails, \
     TDCDetails, InHouseDetails, \
     ODAAidDetails, EONBDetails, \
     EONADetails, ODADetails, \
-    LongPSDetails, Details
+    LongPSDetails, FastSwitchingInformation, \
+    Details
 
 from .charset import RDSCharsetDecode
 from .comfort import BitManipulator
@@ -14,9 +15,8 @@ from .af import AF_Codes, AlternativeFrequencyEntryDecoded
 class GroupDecoder:
     @staticmethod
     def decode(group:Group):
-        def readValue(val, bits, index):
-            return BitManipulator.get_bits(val,bits,index)
-        
+        def readValue(val, bits, index,max=16):
+            return BitManipulator.get_bits(val,bits,index,max)
         def readGroup():
             return readValue(group.b,4,0), BitManipulator.get_bit(group.b, 4)
         def readTP():
@@ -24,7 +24,7 @@ class GroupDecoder:
         def readPTY():
             return readValue(group.b, 5, 6)
         group_number, group_version = readGroup()
-        group_out = DecodedGroup(group,group.a,readTP(),readPTY(), GroupIdentifier(group_number, group_version), Details())
+        group_out = DecodedGroup(group,group.a,readTP(),readPTY(), GroupIdentifier(group_number, bool(group_version)), Details())
         
         def decode_group_0():
             def readTAMS():
@@ -91,8 +91,13 @@ class GroupDecoder:
                 det.text += RDSCharsetDecode.translate(char_2)
             group_out.details = det
         def decode_group_1():
-            det = ECCLICDetails(group.c,None)
-            det.is_lic = (bool(BitManipulator.get_bit(group.c,2)) and bool(BitManipulator.get_bit(group.c,3)))
+            det = PINSLCetails(((group.c & 0xfff) if group_version == 0 else None),None,None,None,None,None)
+            if group_version == 0:
+                det.variant_code = readValue(group.c,3,0,15)
+                det.is_lic = (det.variant_code == 3)
+            det.pin_day = readValue(group.d,5,0)
+            det.pin_hour = readValue(group.d,5,5)
+            det.pin_minute = readValue(group.d,6,10)
             group_out.details = det
         def decode_group_10():
             def readABSegment():
@@ -167,18 +172,38 @@ class GroupDecoder:
                         on_ta = bool(BitManipulator.get_bit(group.c,15))
                 group_out.details = EONADetails(on_pi, on_tp, on_ta, on_ps_segment, on_ps_text, on_pty, on_af, variant_code)
         def decode_group_15():
-            #LPS
-            segment = readValue(group.b, 4, 12)
-            det = LongPSDetails(segment,"")
-            char_1 = (group.c >> 8) & 0xFF
-            char_2 = group.c & 0xFF
-            char_3 = (group.d >> 8) & 0xFF
-            char_4 = group.d & 0xFF
-            det.text += RDSCharsetDecode.translate(char_1)
-            det.text += RDSCharsetDecode.translate(char_2)
-            det.text += RDSCharsetDecode.translate(char_3)
-            det.text += RDSCharsetDecode.translate(char_4)
-            group_out.details = det
+            if group_version == 0: #15A
+                #LPS
+                segment = readValue(group.b, 4, 12)
+                det = LongPSDetails(segment,"")
+                char_1 = (group.c >> 8) & 0xFF
+                char_2 = group.c & 0xFF
+                char_3 = (group.d >> 8) & 0xFF
+                char_4 = group.d & 0xFF
+                det.text += RDSCharsetDecode.translate(char_1)
+                det.text += RDSCharsetDecode.translate(char_2)
+                det.text += RDSCharsetDecode.translate(char_3)
+                det.text += RDSCharsetDecode.translate(char_4)
+                group_out.details = det
+            elif group_version == 1: #15B
+                def readTAMS():
+                    return bool(BitManipulator.get_bit(group.b,11)), bool(BitManipulator.get_bit(group.b,12))
+                def readSegment():
+                    is_di = bool(BitManipulator.get_bit(group.b,13))
+                    return is_di, readValue(group.b, 2, 14)
+                ta, ms = readTAMS()
+                is_di, segment = readSegment()
+                det = FastSwitchingInformation(segment,None,None,None,None,ms,ta)
+                match segment:
+                    case 0:
+                        det.di_dpty = is_di
+                    case 1:
+                        det.di_compressed = is_di
+                    case 2:
+                        det.di_artificial_head = is_di
+                    case 3:
+                        det.di_stereo = is_di
+                group_out.details = det
         def decode_group_oda():
             #same as inhouse
             data_from_b = readValue(group.b,5,11)
@@ -193,7 +218,7 @@ class GroupDecoder:
             case 0:
                 decode_group_0()
             case 1:
-                if group_version == 0: decode_group_1()
+                decode_group_1()
             case 2:
                 decode_group_2()
             case 3:
@@ -212,8 +237,7 @@ class GroupDecoder:
             case 14:
                 decode_group_14()
             case 15:
-                if group_version == 0: decode_group_15()
-                else: decode_group_oda()
+                decode_group_15()
             case _:
                 decode_group_oda()
         return group_out

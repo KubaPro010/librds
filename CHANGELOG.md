@@ -1,3 +1,8 @@
+Version 1.95:
+- Added PIN en/decode and broadcaster data to 1A
+- Added Fast Switching information
+- Added broadcaster data to EON
+
 Version 1.91:
 - Remove tests
 - Fix some stuff about LPS (redsea can decode it now)

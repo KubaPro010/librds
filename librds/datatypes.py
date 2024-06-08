@@ -37,6 +37,16 @@ class PSDetails(Details):
     af: AlternativeFrequencyEntryDecoded
 
 @dataclass
+class FastSwitchingInformation(Details):
+    segment: int
+    di_stereo:bool
+    di_artificial_head:bool
+    di_compressed:bool
+    di_dpty:bool
+    ms: bool
+    ta: bool
+
+@dataclass
 class RTDetails(Details):
     segment: int
     ab: bool
@@ -54,9 +64,13 @@ class PTYNDetails(Details):
     text: str
 
 @dataclass
-class ECCLICDetails(Details):
+class PINSLCetails(Details):
     data:int
     is_lic:bool
+    variant_code: int
+    pin_day: int
+    pin_hour: int
+    pin_minute: int
 
 @dataclass
 class CTDetails(Details):

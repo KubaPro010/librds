@@ -22,6 +22,9 @@ def SubstituteCharacterAtPosition(string: str, char: str, index: int) -> str:
         raise IndexError("Index out of range")
     return string[:index] + char + string[index + 1:]
 
+def int_to_bool_list(n, length=16):
+    return [bit == '1' for bit in ((bin(n)[2:]).zfill(length))]
+
 class BitManipulator:
     """
     This is a alternative to bitwising as its too complex to understand for me, so what did i do?
@@ -50,7 +53,6 @@ class BitManipulator:
         return int(("0b"+string[bit]),2)
     @staticmethod
     def set_bits(value: int, bits: list[int], bit_values: list[bool], max_bits: int = 16) -> int:
-        print(bit_values)
         out = value
         for i, bit_pos in enumerate(bits):
             out = BitManipulator.set_bit(out, bit_pos, bool(bit_values[i]), max_bits)
