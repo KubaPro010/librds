@@ -1,5 +1,6 @@
 class RDSCharsetError(Exception): pass
 class RDSCharset:
+    @staticmethod
     def translate(character:str):
         if not type(character) == str: raise RDSCharsetError("Input is not a string")
         elif len(character) != 1: raise RDSCharsetError("This accepts only 1 character.")
@@ -129,6 +130,7 @@ class RDSCharset:
         return out
     
 class RDSCharsetDecode:
+    @staticmethod
     def translate(value:int): #thx chatgpt
         if not isinstance(value, int): raise RDSCharsetError("Input is not an integer")
         if value < 0 or value > 255: raise RDSCharsetError("Input must be a byte (0-255).")

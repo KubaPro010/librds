@@ -1,6 +1,6 @@
 from enum import Enum, IntEnum
 
-def get_from_list(input:list,index:int,default=None):
+def get_from_list(input:list|str,index:int,default=None):
     """This is a simple function to remove index errors from the group generators"""
     try:
         return input[index]
@@ -49,11 +49,11 @@ class BitManipulator:
         string += bin(value).removeprefix("-").removeprefix("0b")
         return int(("0b"+string[bit]),2)
     @staticmethod
-    def set_bits(value: int, bits: list[int], bit_values: list[int], max_bits: int = 16) -> int:
+    def set_bits(value: int, bits: list[int], bit_values: list[bool], max_bits: int = 16) -> int:
         print(bit_values)
         out = value
         for i, bit_pos in enumerate(bits):
-            out = BitManipulator.set_bit(out, bit_pos, bit_values[i], max_bits)
+            out = BitManipulator.set_bit(out, bit_pos, bool(bit_values[i]), max_bits)
         return out
     @staticmethod
     def get_bits(value: int, bits: int, index:int=0, max_bits:int=16) -> int:

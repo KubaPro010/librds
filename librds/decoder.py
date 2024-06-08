@@ -5,13 +5,14 @@ from .datatypes import Group, DecodedGroup, \
     TDCDetails, InHouseDetails, \
     ODAAidDetails, EONBDetails, \
     EONADetails, ODADetails, \
-    LongPSDetails
+    LongPSDetails, Details
 
 from .charset import RDSCharsetDecode
 from .comfort import BitManipulator
 from .af import AF_Codes, AlternativeFrequencyEntryDecoded
 
 class GroupDecoder:
+    @staticmethod
     def decode(group:Group):
         def readValue(val, bits, index):
             return BitManipulator.get_bits(val,bits,index)
@@ -23,7 +24,7 @@ class GroupDecoder:
         def readPTY():
             return readValue(group.b, 5, 6)
         group_number, group_version = readGroup()
-        group_out = DecodedGroup(group,group.a,readTP(),readPTY(), GroupIdentifier(group_number, group_version), None)
+        group_out = DecodedGroup(group,group.a,readTP(),readPTY(), GroupIdentifier(group_number, group_version), Details())
         
         def decode_group_0():
             def readTAMS():

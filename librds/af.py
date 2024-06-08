@@ -16,8 +16,7 @@ class AlternativeFrequencyEntry:
     af_freq = 0
     lenght = 1
     lfmf = False
-    freq = 0
-    band = IntEnum
+    freq = 0.0
     def __init__(self, band:IntEnum, frequency:float) -> None:
         self.freq = frequency
         self.band = band
