@@ -91,10 +91,11 @@ class GroupDecoder:
                 det.text += RDSCharsetDecode.translate(char_2)
             group_out.details = det
         def decode_group_1():
-            det = PINSLCetails(((group.c & 0xfff) if group_version == 0 else None),None,None,None,None,None)
+            det = PINSLCetails(((group.c & 0xfff) if group_version == 0 else None),None,None,None,None,None,None)
             if group_version == 0:
                 det.variant_code = readValue(group.c,3,0,15)
                 det.is_lic = (det.variant_code == 3)
+                det.is_broadcaster_data = (det.variant_code == 6)
             det.pin_day = readValue(group.d,5,0)
             det.pin_hour = readValue(group.d,5,5)
             det.pin_minute = readValue(group.d,6,10)

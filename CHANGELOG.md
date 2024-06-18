@@ -1,3 +1,7 @@
+Version 1.96:
+- Add string names to decoder datatypes (for identification)
+- Add "is_broadcaster_data" for PINSLCDetails
+
 Version 1.95:
 - Added PIN en/decode and broadcaster data to 1A
 - Added Fast Switching information
