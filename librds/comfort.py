@@ -1,4 +1,4 @@
-from enum import Enum, IntEnum
+from enum import Enum
 
 def get_from_list(input:list|str,index:int,default=None):
     """This is a simple function to remove index errors from the group generators"""
@@ -102,10 +102,15 @@ def calculate_ymd(mjd:int):
     year = int((100 * (njd - 49) + year + ljd))
     return year, (month-1), day
 
-def calculate_ctoffset_to_hrmin(offset:int) -> tuple[int,int]:
+def calculate_ct_hm(offset:int) -> tuple[int,int]:
     """Returns the hour and minute offset of CT"""
-    h = int((offset*30)/60)
-    return h, int((offset*30)-(h*60))
+    hour = int((offset*30)/60)
+    return hour, int((offset*30)-(hour*60))
+
+def calculate_ctoffset_to_hrmin(offset:int) -> tuple[int,int]:
+    """better name"""
+    print("Please update ('calculate_ctoffset_to_hrmin') to ('calculate_ct_hm')")
+    return calculate_ct_hm(offset)
 
 class Groups(Enum):
     PS = 0
@@ -126,17 +131,18 @@ class Groups(Enum):
     LONG_PS = 15
 
 class GroupSequencer:
-    """you can use this code to sequence though anything"""
-    def __init__(self, sequence:list[IntEnum]) -> None:
+    """Sequence though groups"""
+    def __init__(self, sequence:list[Groups]) -> None:
         self.cur_idx = 1
         self.sequence = sequence
     def get_next(self):
         if len(self.sequence) == 0: return
         if self.cur_idx > len(self.sequence): self.cur_idx = 1
         prev = self.sequence[self.cur_idx-1]
+        if not isinstance(prev, Groups): raise Exception("Not a valid Groups enum")
         self.cur_idx += 1
         return prev
-    def change_sequence(self, sequence:list[IntEnum]):
+    def change_sequence(self, sequence:list[Groups]):
        self.sequence = sequence
        self.cur_idx = 1
     def __len__(self):

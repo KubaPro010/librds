@@ -11,13 +11,17 @@ import librds
 basic = librds.GroupGenerator.basic(0x3000)
 print(basic)
 
-print(librds.GroupGenerator.ps(basic,"hi",0))
+ps = librds.GroupGenerator.ps(basic,"hi",0)
+print(ps)
+
+print(librds.GroupDecoder.decode(ps))
 ```
 
 Output:
 ```
-    Group(a=12288, b=0, c=0, d=0, is_version_b=None)
+    Group(a=12288, b=0, c=0, d=0, is_version_b=False)
     Group(a=12288, b=8, c=57549, d=26729, is_version_b=False)
+    DecodedGroup(raw_group=Group(a=12288, b=8, c=57549, d=26729, is_version_b=False), pi=12288, tp=False, pty=0, group=GroupIdentifier(group_number=0, group_version=False), details=PSDetails(segment=0, di_stereo=None, di_artificial_head=None, di_compressed=None, di_dpty=False, ms=True, ta=False, text='hi', af=AlternativeFrequencyEntryDecoded(is_af=False, af_freq=None, af_freq1=None, lfmf_follows=None, all_af_lenght=None)))
 ```
 
 **Note** that LibRDS required Python 3.10+ to run due to its use of `match`

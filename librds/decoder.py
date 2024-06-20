@@ -19,10 +19,10 @@ class GroupDecoder:
             return BitManipulator.get_bits(val,bits,index,max)
         def readGroup():
             return readValue(group.b,4,0), BitManipulator.get_bit(group.b, 4)
-        def readTP():
-            return bool(BitManipulator.get_bit(group.b,5))
         def readPTY():
             return readValue(group.b, 5, 6)
+        def readTP():
+            return bool(BitManipulator.get_bit(group.b,5))
         group_number, group_version = readGroup()
         group_out = DecodedGroup(group,group.a,readTP(),readPTY(), GroupIdentifier(group_number, bool(group_version)), Details())
         
@@ -33,8 +33,8 @@ class GroupDecoder:
                 is_di = bool(BitManipulator.get_bit(group.b,13))
                 return is_di, readValue(group.b, 2, 14)
             def decodeAF():
-                af0 = (group.c >> 8) & 0xff
-                af1 = group.c & 0xff
+                af0 = (group.c >> 8) & 0xff #high byte
+                af1 = group.c & 0xff #low byte
                 entry = AlternativeFrequencyEntryDecoded(None,None,None,None,None)
                 if af0 == AF_Codes.NoAF.value and af1 == AF_Codes.Filler.value:
                     entry.is_af = False

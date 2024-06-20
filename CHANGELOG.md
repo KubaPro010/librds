@@ -1,3 +1,11 @@
+Version 1.97:
+- Deprecate librds_version
+- Rename 'calculate_ctoffset_to_hrmin' to 'calculate_ct_hm'
+- Small changes in AF encoding
+- GroupSequencer changes
+- Rename 'blocks' to 'basics' in the generator.
+- Comments added in some places
+
 Version 1.96:
 - Add string names to decoder datatypes (for identification)
 - Add "is_broadcaster_data" for PINSLCDetails
@@ -9,7 +17,7 @@ Version 1.95:
 
 Version 1.91:
 - Remove tests
-- Fix some stuff about LPS (redsea can decode it now)
+- Fix some stuff about LPS (redsea can decode it now) (Future edit: RDS Spy also can decode LPS)
 
 Version 1.9:
 - Some improvements

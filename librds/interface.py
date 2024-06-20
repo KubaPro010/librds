@@ -8,7 +8,7 @@ class GroupInterface:
         if len(text) >= 64: text = text[:64]
         elif not full: text += "\r" # http://www.interactive-radio-system.com/docs/EN50067_RDS_Standard.pdf page 26
         if not full:
-            while len(text) % 4: # if we don't have text to equally spread across 4 charcter parts then we add padding
+            while len(text) % 4: # if can't have the text to equally spread across 4 charcter parts then we add padding
                 text = text + " "
             segments = 0.0
             for _ in range(len(text)):
