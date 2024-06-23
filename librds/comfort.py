@@ -1,6 +1,7 @@
 from enum import Enum
+from typing import Any
 
-def get_from_list(input:list|str,index:int,default=None):
+def get_from_list(input:list|str,index:int,default:Any=None) -> Any:
     """This is a simple function to remove index errors from the group generators"""
     try:
         return input[index]
@@ -22,7 +23,7 @@ def SubstituteCharacterAtPosition(string: str, char: str, index: int) -> str:
         raise IndexError("Index out of range")
     return string[:index] + char + string[index + 1:]
 
-def int_to_bool_list(n, length=16):
+def int_to_bool_list(n, length=16) -> list[bool]:
     return [bit == '1' for bit in ((bin(n)[2:]).zfill(length))]
 
 class BitManipulator:
@@ -42,7 +43,7 @@ class BitManipulator:
         """
         string = ("0"*(max_bits-(value.bit_length())))
         string += bin(value).removeprefix("-").removeprefix("0b")
-        
+
         if bit > len(string): raise IndexError
         string = SubstituteCharacterAtPosition(string,("1" if bit_value else "0"),bit)
         return int(("0b"+string),2)
@@ -64,14 +65,14 @@ class BitManipulator:
             out += bin(BitManipulator.get_bit(value, (i+index), max_bits)).removeprefix("0b")
         return int(out,2)
 
-def calculate_mjd(year: int, month: int, day:int):
+def calculate_mjd(year: int, month: int, day:int) -> int:
     """
     :param year: e.x 2024
     :param month: (starts from 0) 0 - Jan, 1 - Feb ...
     :param day: (starts from 1)"""
     l = 1 if (month == 0 or month == 1) else 0
     return (
-        14956 + day + 
+        14956 + day +
         int(
             ((year - 1900) - l) * 365.25
         ) +
@@ -80,23 +81,23 @@ def calculate_mjd(year: int, month: int, day:int):
         )
     )
 
-def calculate_ymd(mjd:int):
+def calculate_ymd(mjd:int) -> tuple[int, int, int]:
     """Returns the same format as calculate_mjd, so you can encode and decode without any conversions"""
     if mjd < 15079.0:
         raise Exception("Invalid MJD")
     jd = mjd + 2_400_001
     ljd = jd + 68569
-    
+
     njd = int((4 * ljd / 146097))
     ljd = ljd - int(((146097 * njd + 3) / 4))
-    
+
     year = int((4000 * (ljd + 1) / 1461001))
     ljd = ljd - int(((1461 * year / 4))) + 31
-    
+
     month = int((80 * ljd / 2447))
-    
+
     day = ljd - int((2447 * month / 80))
-    
+
     ljd = int((month / 11))
     month = int((month + 2 - 12 * ljd))
     year = int((100 * (njd - 49) + year + ljd))
@@ -106,11 +107,6 @@ def calculate_ct_hm(offset:int) -> tuple[int,int]:
     """Returns the hour and minute offset of CT"""
     hour = int((offset*30)/60)
     return hour, int((offset*30)-(hour*60))
-
-def calculate_ctoffset_to_hrmin(offset:int) -> tuple[int,int]:
-    """better name"""
-    print("Please update ('calculate_ctoffset_to_hrmin') to ('calculate_ct_hm')")
-    return calculate_ct_hm(offset)
 
 class Groups(Enum):
     PS = 0
@@ -135,17 +131,17 @@ class GroupSequencer:
     def __init__(self, sequence:list[Groups]) -> None:
         self.cur_idx = 1
         self.sequence = sequence
-    def get_next(self):
-        if len(self.sequence) == 0: return
+    def get_next(self) -> None | Groups:
+        if len(self.sequence) == 0: return None
         if self.cur_idx > len(self.sequence): self.cur_idx = 1
         prev = self.sequence[self.cur_idx-1]
         if not isinstance(prev, Groups): raise Exception("Not a valid Groups enum")
         self.cur_idx += 1
         return prev
-    def change_sequence(self, sequence:list[Groups]):
+    def change_sequence(self, sequence:list[Groups]) -> None:
        self.sequence = sequence
        self.cur_idx = 1
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.sequence)
-    def __iter__(self):
+    def __iter__(self) -> list[Groups]:
         return self.sequence

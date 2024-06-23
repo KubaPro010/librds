@@ -1,10 +1,12 @@
+from typing import Literal
+
 class GroupInterface:
     @staticmethod
-    def getPS(text: str):
+    def getPS(text: str) -> tuple[str, Literal[4]]:
         if len(text) > 8: text = text[:8]
         return text.ljust(8), 4
     @staticmethod
-    def getRT(text: str,full:bool=False):
+    def getRT(text: str,full:bool=False) -> tuple[None, None] | tuple[str, int] | tuple[str, Literal[16]]:
         if len(text) >= 64: text = text[:64]
         elif not full: text += "\r" # http://www.interactive-radio-system.com/docs/EN50067_RDS_Standard.pdf page 26
         if not full:
@@ -19,7 +21,7 @@ class GroupInterface:
         else:
             return text.ljust(64), 16
     @staticmethod
-    def getLongPS(text: str,full:bool=False):
+    def getLongPS(text: str,full:bool=False) -> tuple[None, None] | tuple[str, int] | tuple[str, Literal[8]]:
         if len(text) >= 32: text = text[:32]
         elif not full: text += "\r"
         if not full:
@@ -34,6 +36,6 @@ class GroupInterface:
         else:
             return text.ljust(32), 8
     @staticmethod
-    def getPTYN(text: str):
+    def getPTYN(text: str) -> tuple[str, Literal[2]]:
         if len(text) > 8: text = text[:8]
         return text.ljust(8), 2

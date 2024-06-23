@@ -35,7 +35,7 @@ class AlternativeFrequencyEntry:
                 self.af_freq = int(int(frequency - 531.0)/9+16)
             case AF_Bands.MF_RBDS:
                 self.af_freq = int(int(frequency - 540.0)/10+17)
-    def __len__(self):
+    def __len__(self) -> int:
         return self.lenght
     def __repr__(self) -> str:
         return f"<AFEntry {self.freq=} {self.band.name=} {self.af_freq=} {self.lenght=} {self.lfmf=}>"
@@ -47,9 +47,13 @@ class AlternativeFrequency:
     def __init__(self, af:list[AlternativeFrequencyEntry]=[]) -> None:
         self.af = af
         self.cur_idx = 0
-    def get_no_af(self=None): return AF_Codes.NoAF.value << 8 | AF_Codes.Filler.value
-    def get_lfmf_follows(self=None): return AF_Codes.LfMf_Follows.value << 8 | AF_Codes.Filler.value
-    def get_next(self):
+
+    @staticmethod
+    def get_no_af() -> int: return AF_Codes.NoAF.value << 8 | AF_Codes.Filler.value
+    @staticmethod
+    def get_lfmf_follows() -> int: return AF_Codes.LfMf_Follows.value << 8 | AF_Codes.Filler.value
+
+    def get_next(self) -> int | None:
         print(self.cur_idx)
         if len(self.af) > 25:
             raise AFException("Too much afs!")

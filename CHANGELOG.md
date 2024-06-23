@@ -1,9 +1,14 @@
+Version 1.98:
+- Remove librds_version
+- Remove calculate_ctoffset_to_hrmin
+- Total type safety
+
 Version 1.97:
 - Deprecate librds_version
 - Rename 'calculate_ctoffset_to_hrmin' to 'calculate_ct_hm'
 - Small changes in AF encoding
 - GroupSequencer changes
-- Rename 'blocks' to 'basics' in the generator.
+- Rename 'blocks' to 'basic' in the generator.
 - Comments added in some places
 
 Version 1.96:

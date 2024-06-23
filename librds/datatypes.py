@@ -9,9 +9,9 @@ class Group:
     c:int
     d:int
     is_version_b: bool
-    def to_list(self):
+    def to_list(self) -> list[int]:
         return [self.a, self.b, self.c, self.d]
-    def __iter__(self):
+    def __iter__(self) -> list[int]:
         return self.to_list()
 
 @dataclass

@@ -2,7 +2,7 @@ class RDSCharsetError(Exception): pass
 class RDSCharset:
     """Encoding puposes only: Translates UTF-8 into RDS"""
     @staticmethod
-    def translate(character:str):
+    def translate(character:str) -> int:
         if not type(character) == str: raise RDSCharsetError("Input is not a string")
         elif len(character) != 1: raise RDSCharsetError("This accepts only 1 character.")
         out = 0
@@ -129,11 +129,11 @@ class RDSCharset:
             case 0x24: out = 0xab #DOLLAR SIGN
             case _: out = ord(character)
         return out
-    
+
 class RDSCharsetDecode:
     """Decoding puposes only: Translates RDS into UTF-8"""
     @staticmethod
-    def translate(value:int): #thx chatgpt
+    def translate(value:int) -> str: #thx chatgpt
         if not isinstance(value, int): raise RDSCharsetError("Input is not an integer")
         if value < 0 or value > 255: raise RDSCharsetError("Input must be a byte (0-255).")
         character = None
