@@ -1,3 +1,6 @@
+Version 1.99:
+- Add DAB Crossrenfence ODA encoding
+
 Version 1.98:
 - Remove librds_version
 - Remove calculate_ctoffset_to_hrmin

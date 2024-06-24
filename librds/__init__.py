@@ -1,6 +1,7 @@
 from .interface import GroupInterface
 from .comfort import Groups, GroupSequencer, calculate_mjd, calculate_ymd, calculate_ct_hm
-from .generator import GroupGenerator, Group
+from .generator import GroupGenerator, Group, GroupIdentifier
 from .decoder import GroupDecoder
-__version__: float = 1.98
+from .oda import ODA
+__version__: float = 1.99
 __lib__: str = "librds"

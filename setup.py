@@ -4,8 +4,8 @@ with open('README.md', encoding='utf-8') as f:
     readme = f.read()
 
 setup(
-        name="librds", 
-        version="1.98",
+        name="librds",
+        version="1.99",
         author="kuba201",
         description='RDS Group Generator',
         long_description=readme,

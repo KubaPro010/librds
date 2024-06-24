@@ -340,7 +340,7 @@ class GroupGenerator:
         :data group: The type of group this is
         :data data: Raw 16 bit data basic (first int must be 5 bits or max 31)
 
-        Decoder status: (ODA Decoded)
+        Decoder status: (ODA Decoded as Raw)
         """
         if not isinstance(group, GroupIdentifier): raise GroupGeneratorError("group should be a GroupIdentifier")
         return Group(
