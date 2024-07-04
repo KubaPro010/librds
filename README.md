@@ -28,3 +28,6 @@ Output:
 
 # Decoder
 LibRDS also includes a RDS Group decoder, so you can encode with librds and then also decode it, currently librds's decoder decodes all of the groups it can encode (such as CT, IH, TDC, etc...)
+
+# How to install it?
+either clone this and do `pip install .` or be simple and do `pip install librds`
