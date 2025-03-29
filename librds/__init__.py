@@ -3,5 +3,5 @@ from .comfort import Groups, GroupSequencer, calculate_mjd, calculate_ymd, calcu
 from .generator import GroupGenerator, Group, GroupIdentifier
 from .decoder import GroupDecoder
 from .oda import ODA
-__version__: float = 1.99
+__version__: float = 2.00
 __lib__: str = "librds"

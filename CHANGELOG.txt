@@ -1,3 +1,7 @@
+Version 2.00:
+- Refactor code
+- Full compatibility with the IEC 62106 standard
+
 Version 1.99:
 - Add DAB Crossrenfence ODA encoding
 
