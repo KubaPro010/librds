@@ -3,10 +3,8 @@ from typing import Any
 
 def get_from_list(input:list|str,index:int,default:Any=None) -> Any:
     """This is a simple function to remove index errors from the group generators"""
-    try:
-        return input[index]
-    except IndexError:
-        return default
+    try: return input[index]
+    except IndexError: return default
 
 def SubstituteCharacterAtPosition(string: str, char: str, index: int) -> str:
     """
@@ -17,10 +15,8 @@ def SubstituteCharacterAtPosition(string: str, char: str, index: int) -> str:
     :param index: Index of the character
     :return: Modified string with the character at the specified index
     """
-    if not isinstance(string, str) or not isinstance(char, str) or not isinstance(index, int):
-        raise Exception("Invalid input types")
-    if not (0 <= index < len(string)):
-        raise IndexError("Index out of range")
+    if not isinstance(string, str) or not isinstance(char, str) or not isinstance(index, int): raise Exception("Invalid input types")
+    if not (0 <= index < len(string)): raise IndexError("Index out of range")
     return string[:index] + char + string[index + 1:]
 
 def int_to_bool_list(n, length=16) -> list[bool]:
@@ -82,7 +78,7 @@ def calculate_mjd(year: int, month: int, day:int) -> int:
     )
 
 def calculate_ymd(mjd:int) -> tuple[int, int, int]:
-    """Returns the same format as calculate_mjd, so you can encode and decode without any conversions"""
+    """Returns the same format as calculate_mjd, so you can encode and decode without any conversions. year, month, day"""
     if mjd < 15079.0:
         raise Exception("Invalid MJD")
     jd = mjd + 2_400_001
@@ -108,35 +104,21 @@ def calculate_ct_hm(offset:int) -> tuple[int,int]:
     hour = int((offset*30)/60)
     return hour, int((offset*30)-(hour*60))
 
-class Groups(Enum):
-    PS = 0
-    PS_B = 1
-    RT = 2
-    RT_B = 3
-    PTYN = 4
-    ECC = 5
-    EON = 6
-    EON_B = 7
-    ODA = 8
-    ODA_AID = 9
-    LONG_PS = 10
-
 class GroupSequencer:
     """Sequence though groups"""
-    def __init__(self, sequence:list[Groups]) -> None:
+    def __init__(self, sequence:list[int]) -> None:
         self.cur_idx = 1
         self.sequence = sequence
-    def get_next(self) -> None | Groups:
+    def get_next(self) -> None | int:
         if len(self.sequence) == 0: return None
         if self.cur_idx > len(self.sequence): self.cur_idx = 1
         prev = self.sequence[self.cur_idx-1]
-        if not isinstance(prev, Groups): raise Exception("Not a valid Groups enum")
         self.cur_idx += 1
         return prev
-    def change_sequence(self, sequence:list[Groups]) -> None:
+    def change_sequence(self, sequence:list[int]) -> None:
         self.sequence = sequence
         self.cur_idx = 1
     def __len__(self) -> int:
         return len(self.sequence)
-    def __iter__(self) -> list[Groups]:
+    def __iter__(self) -> list[int]:
         return self.sequence

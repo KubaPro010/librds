@@ -3,16 +3,13 @@ from .af import AlternativeFrequencyEntryDecoded
 
 @dataclass
 class Group:
-    """This is a basic group function to store the blocks"""
     a:int
     b:int
     c:int
     d:int
     is_version_b: bool
-    def to_list(self) -> list[int]:
-        return [self.a, self.b, self.c, self.d]
-    def __iter__(self) -> list[int]:
-        return self.to_list()
+    def to_list(self) -> list[int]: return [self.a, self.b, self.c, self.d]
+    def __iter__(self) -> list[int]: return self.to_list()
 
 @dataclass
 class GroupIdentifier:
@@ -21,7 +18,7 @@ class GroupIdentifier:
 
 @dataclass
 class Details:
-    details=""
+    details="NOTSET"
 
 @dataclass
 class PSDetails(Details):

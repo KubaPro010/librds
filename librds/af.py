@@ -14,7 +14,6 @@ class AF_Bands(Enum):
     FM = 0
     LF = 1
     MF = 2
-    MF_RBDS = 3
 class AlternativeFrequencyEntry:
     """This is a AF Entry which will be used by the AF Class"""
     af_freq = 0
@@ -33,17 +32,11 @@ class AlternativeFrequencyEntry:
                 self.af_freq = int(int(frequency - 153.0)/9+1)
             case AF_Bands.MF:
                 self.af_freq = int(int(frequency - 531.0)/9+16)
-            case AF_Bands.MF_RBDS:
-                self.af_freq = int(int(frequency - 540.0)/10+17)
     def __len__(self) -> int:
         return self.lenght
     def __repr__(self) -> str:
         return f"<AFEntry {self.freq=} {self.band.name=} {self.af_freq=} {self.lenght=} {self.lfmf=}>"
 class AlternativeFrequency:
-    """This is a working Alterntive Frequency implementation that was tested on FM, LF, MF, RBDS MF
-    however the rbds MF does have a problem, on rds mf 540 and 549 work but 550 doesnt, this is expected as 550 is not divisible by 9 as in europe am has a 9 khz step
-    in the us however am has a 10 khz step 540 works as expected but 549 round to 540, as expected but 550 does the same?
-    but im doing rbds out of generosity, not need or want"""
     def __init__(self, af:list[AlternativeFrequencyEntry]=[]) -> None:
         self.af = af
         self.cur_idx = 0

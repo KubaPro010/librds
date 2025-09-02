@@ -1,3 +1,8 @@
+Version 2.1:
+- Tabs to spaces (Python)
+- Remove RBDS support
+- Allow integers in GroupSequencer
+
 Version 2.00:
 - Refactor code
 - Full compatibility with the IEC 62106 standard
